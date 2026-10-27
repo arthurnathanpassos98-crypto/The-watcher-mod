@@ -20,12 +20,20 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.8'
+
+      - name: Extract source ZIP
+        run: |
+          unzip -q TheWatcher_Forge_1.20.1_source.zip -d project
 
       - name: Build mod
+        working-directory: project
         run: gradle build
 
       - name: Upload JAR
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: TheWatcher-Mod
-          path: build/libs/*.jar
+          path: project/build/libs/*.jar
